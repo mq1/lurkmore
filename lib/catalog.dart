@@ -19,46 +19,44 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Thread {
-  final int id;
-  final int thumbnailId;
-  final String subject;
-  final String comment;
-  final DateTime lastModified;
-  final int replies;
+  final int no; // numeric id
+  final int tim; // numeric image id
+  final String sub; // subject
+  final String com; // comment
+  final int replies; // reply count
 
-  Thread({this.id, this.thumbnailId, this.subject, this.comment, this.lastModified, this.replies});
+  Thread({this.no, this.tim, this.sub, this.com, this.replies});
 
   factory Thread.fromJson(Map<String, dynamic> json) {
     return Thread(
-      id: json['no'] as int,
-      thumbnailId: json['tim'] as int,
-      subject: json['sub'] as String,
-      comment: json['com'] as String,
-      lastModified: DateTime.fromMillisecondsSinceEpoch((json['last_modified'] as int)*1000),
+      no: json['no'] as int,
+      tim: json['tim'] as int,
+      sub: json['sub'] as String,
+      com: json['com'] as String,
       replies: json['replies'] as int
     );
   }
 }
 
-class ThreadsView extends StatefulWidget {
-  ThreadsView({Key key, this.board}) : super(key: key);
+class CatalogView extends StatefulWidget {
+  CatalogView({Key key, this.board}) : super(key: key);
 
   final String board;
 
   @override
-  _ThreadsViewState createState() => _ThreadsViewState();
+  _CatalogViewState createState() => _CatalogViewState();
 }
 
-class _ThreadsViewState extends State<ThreadsView> {
+class _CatalogViewState extends State<CatalogView> {
   Map<String, dynamic> threads;
 
-  Future<List<Thread>> fetchThreads(http.Client client) async {
+  Future<List<Thread>> fetchCatalog(http.Client client) async {
     final response = await client.get('https://a.4cdn.org/${widget.board}/catalog.json');
 
-    return parseThreads(response.body);
+    return parseCatalog(response.body);
   }
 
-  List<Thread> parseThreads(String responseBody) {
+  List<Thread> parseCatalog(String responseBody) {
     List<Thread> threads = [];
     final parsed = json.decode(responseBody);
 
@@ -74,7 +72,7 @@ class _ThreadsViewState extends State<ThreadsView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Thread>>(
-      future: fetchThreads(http.Client()),
+      future: fetchCatalog(http.Client()),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 
@@ -106,10 +104,10 @@ class _ThreadListState extends State<ThreadList> {
           leading: Container (
             height: 64,
             width: 64,
-            child: Image.network('https://i.4cdn.org/${widget.board}/${widget.threads[index].thumbnailId}s.jpg')
+            child: Image.network('https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
           ),
-          title: Text(widget.threads[index].subject != null ? widget.threads[index].subject : '', maxLines: 2, overflow: TextOverflow.ellipsis),
-          subtitle: Text(widget.threads[index].comment != null ? widget.threads[index].comment : '', maxLines: 2, overflow: TextOverflow.ellipsis)
+          title: Text(widget.threads[index].sub != null ? widget.threads[index].sub : '', maxLines: 2, overflow: TextOverflow.ellipsis),
+          subtitle: Text(widget.threads[index].com != null ? widget.threads[index].com : '', maxLines: 2, overflow: TextOverflow.ellipsis)
         );
       }
     );
