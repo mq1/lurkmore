@@ -53,10 +53,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Widget _handleNavigation(int index) { // TODO change this (horrible navigation system)
-    switch(index) {
+  Widget _handleNavigation(int index) {
+    // TODO change this (horrible navigation system)
+    switch (index) {
       case 0:
-        return CatalogView(board: _currentBoard,);
+        return CatalogView(
+          board: _currentBoard,
+        );
       case 1:
         return BoardsView(onChanged: _handleOpenBoard);
       case 2:
@@ -75,17 +78,12 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.bookmark_border),
-            title: new Text('catalog')
-          ),
+              icon: new Icon(Icons.bookmark_border),
+              title: new Text('catalog')),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.list),
-            title: new Text('boards')
-          ),
+              icon: new Icon(Icons.list), title: new Text('boards')),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.settings),
-            title: new Text('settings')
-          ),
+              icon: new Icon(Icons.settings), title: new Text('settings')),
         ],
         onTap: (index) {
           setState(() {

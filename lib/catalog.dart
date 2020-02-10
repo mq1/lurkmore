@@ -29,12 +29,11 @@ class Thread {
 
   factory Thread.fromJson(Map<String, dynamic> json) {
     return Thread(
-      no: json['no'] as int,
-      tim: json['tim'] as int,
-      sub: json['sub'] as String,
-      com: json['com'] as String,
-      replies: json['replies'] as int
-    );
+        no: json['no'] as int,
+        tim: json['tim'] as int,
+        sub: json['sub'] as String,
+        com: json['com'] as String,
+        replies: json['replies'] as int);
   }
 }
 
@@ -51,7 +50,8 @@ class _CatalogViewState extends State<CatalogView> {
   Map<String, dynamic> threads;
 
   Future<List<Thread>> fetchCatalog(http.Client client) async {
-    final response = await client.get('https://a.4cdn.org/${widget.board}/catalog.json');
+    final response =
+        await client.get('https://a.4cdn.org/${widget.board}/catalog.json');
 
     return parseCatalog(response.body);
   }
@@ -77,8 +77,8 @@ class _CatalogViewState extends State<CatalogView> {
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
-          ? ThreadList(threads: snapshot.data, board: widget.board)
-          : Center(child: CircularProgressIndicator());
+            ? ThreadList(threads: snapshot.data, board: widget.board)
+            : Center(child: CircularProgressIndicator());
       },
     );
   }
@@ -98,18 +98,26 @@ class _ThreadListState extends State<ThreadList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: widget.threads.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          leading: Container (
-            height: 64,
-            width: 64,
-            child: Image.network('https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
-          ),
-          title: Text(widget.threads[index].sub != null ? widget.threads[index].sub : '', maxLines: 2, overflow: TextOverflow.ellipsis),
-          subtitle: Text(widget.threads[index].com != null ? widget.threads[index].com : '', maxLines: 2, overflow: TextOverflow.ellipsis)
-        );
-      }
-    );
+        itemCount: widget.threads.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+              leading: Container(
+                  height: 64,
+                  width: 64,
+                  child: Image.network(
+                      'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')),
+              title: Text(
+                  widget.threads[index].sub != null
+                      ? widget.threads[index].sub
+                      : '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis),
+              subtitle: Text(
+                  widget.threads[index].com != null
+                      ? widget.threads[index].com
+                      : '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis));
+        });
   }
 }

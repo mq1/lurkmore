@@ -26,9 +26,7 @@ class Board {
 
   factory Board.fromJson(Map<String, dynamic> json) {
     return Board(
-      board: json['board'] as String,
-      title: json['title'] as String
-    );
+        board: json['board'] as String, title: json['title'] as String);
   }
 }
 
@@ -43,7 +41,6 @@ class BoardsView extends StatefulWidget {
 
 class _BoardsViewState extends State<BoardsView> {
   Map<String, dynamic> boards;
-  
 
   Future<List<Board>> fetchBoards(http.Client client) async {
     final response = await client.get('https://a.4cdn.org/boards.json');
@@ -69,8 +66,8 @@ class _BoardsViewState extends State<BoardsView> {
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
-          ? BoardList(boards: snapshot.data, onChanged: _handleTap)
-          : Center(child: CircularProgressIndicator());
+            ? BoardList(boards: snapshot.data, onChanged: _handleTap)
+            : Center(child: CircularProgressIndicator());
       },
     );
   }
@@ -94,16 +91,15 @@ class _BoardListState extends State<BoardList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: widget.boards.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          leading: CircleAvatar(child: Text(widget.boards[index].board)),
-          title: Text(widget.boards[index].title),
-          onTap: () {
-            _handleTap(widget.boards[index].board);
-          },
-        );
-      }
-    );
+        itemCount: widget.boards.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            leading: CircleAvatar(child: Text(widget.boards[index].board)),
+            title: Text(widget.boards[index].title),
+            onTap: () {
+              _handleTap(widget.boards[index].board);
+            },
+          );
+        });
   }
 }
