@@ -78,12 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: new Icon(Icons.bookmark_border),
-              title: new Text('catalog')),
+              icon: Icon(Icons.bookmark_border), title: Text('catalog')),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.list), title: new Text('boards')),
+              icon: Icon(Icons.list), title: Text('boards')),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.settings), title: new Text('settings')),
+              icon: Icon(Icons.settings), title: Text('settings')),
         ],
         onTap: (index) {
           setState(() {
