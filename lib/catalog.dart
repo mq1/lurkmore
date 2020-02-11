@@ -97,7 +97,7 @@ class ThreadList extends StatefulWidget {
 class _ThreadListState extends State<ThreadList> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
         itemCount: widget.threads.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
@@ -118,6 +118,7 @@ class _ThreadListState extends State<ThreadList> {
                       : '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis));
-        });
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider());
   }
 }
