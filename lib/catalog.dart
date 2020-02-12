@@ -17,6 +17,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:lurkmore/thread.dart';
 
 class Thread {
   final int no; // numeric id
@@ -95,30 +96,41 @@ class ThreadList extends StatefulWidget {
 }
 
 class _ThreadListState extends State<ThreadList> {
+  void _handleTap(Thread thread) {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (context) {
+          return ThreadView(board: widget.board, threadNo: thread.no);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
         itemCount: widget.threads.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-              leading: Container(
-                  height: 64,
-                  width: 64,
-                  child: Image.network(
-                      'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')),
-              title: Text(
-                  widget.threads[index].sub != null
-                      ? widget.threads[index].sub
-                      : '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis),
-              subtitle: Text(
-                  widget.threads[index].com != null
-                      ? widget.threads[index].com
-                      : '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis));
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider());
+          return Card(
+              child: ListTile(
+                  leading: Container(
+                      height: 64,
+                      width: 64,
+                      child: Image.network(
+                          'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')),
+                  title: Text(
+                      widget.threads[index].sub != null
+                          ? widget.threads[index].sub
+                          : '',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
+                  subtitle: Text(
+                      widget.threads[index].com != null
+                          ? widget.threads[index].com
+                          : '',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
+                  onTap: () {
+                    _handleTap(widget.threads[index]);
+                  }));
+        });
   }
 }

@@ -38,10 +38,11 @@ class Post {
 }
 
 class ThreadView extends StatefulWidget {
-  ThreadView({Key key, this.board, this.thread}) : super(key: key);
+  ThreadView({Key key, @required this.board, @required this.threadNo})
+      : super(key: key);
 
   final String board;
-  final int thread;
+  final int threadNo;
 
   @override
   _ThreadViewState createState() => _ThreadViewState();
@@ -49,8 +50,8 @@ class ThreadView extends StatefulWidget {
 
 class _ThreadViewState extends State<ThreadView> {
   Future<List<Post>> fetchThread(http.Client client) async {
-    final response = await client
-        .get('https://a.4cdn.org/${widget.board}/thread/${widget.thread}.json');
+    final response = await client.get(
+        'https://a.4cdn.org/${widget.board}/thread/${widget.threadNo}.json');
 
     return parseThread(response.body);
   }
@@ -63,21 +64,23 @@ class _ThreadViewState extends State<ThreadView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Post>>(
+    return Container(
+        child: FutureBuilder<List<Post>>(
       future: fetchThread(http.Client()),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
-            ? PostList(posts: snapshot.data)
+            ? PostList(board: widget.board, posts: snapshot.data)
             : Center(child: CircularProgressIndicator());
       },
-    );
+    ));
   }
 }
 
 class PostList extends StatefulWidget {
-  PostList({Key key, this.board, this.posts}) : super(key: key);
+  PostList({Key key, @required this.board, @required this.posts})
+      : super(key: key);
 
   final String board;
   final List<Post> posts;
@@ -92,24 +95,25 @@ class _PostListState extends State<PostList> {
     return ListView.builder(
         itemCount: widget.posts.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-              leading: Container(
-                  height: 64,
-                  width: 64,
-                  child: Image.network(
-                      'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
-              title: Text(
-                  widget.posts[index].sub != null
-                      ? widget.posts[index].sub
-                      : '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis),
-              subtitle: Text(
-                  widget.posts[index].com != null
-                      ? widget.posts[index].com
-                      : '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis));
+          return Card(
+              child: ListTile(
+                  leading: Container(
+                      height: 64,
+                      width: 64,
+                      child: widget.posts[index].tim != null
+                          ? Image.network(
+                              'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')
+                          : SizedBox.shrink()),
+                  title: Text(
+                    widget.posts[index].sub != null
+                        ? widget.posts[index].sub
+                        : '',
+                  ),
+                  subtitle: Text(
+                    widget.posts[index].com != null
+                        ? widget.posts[index].com
+                        : '',
+                  )));
         });
   }
 }

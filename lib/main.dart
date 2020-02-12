@@ -57,9 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO change this (horrible navigation system)
     switch (index) {
       case 0:
-        return CatalogView(
-          board: _currentBoard,
-        );
+        return CatalogView(board: _currentBoard);
       case 1:
         return BoardsView(onChanged: _handleOpenBoard);
       case 2:
