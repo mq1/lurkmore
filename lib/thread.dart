@@ -102,20 +102,17 @@ class _PostListState extends State<PostList> {
           var subtitle =
               widget.posts[index].com == title ? '' : widget.posts[index].com;
 
-          return widget.posts[index].tim != null
-              ? Card(
-                  child: ListTile(
+          return Card(
+              child: widget.posts[index].tim != null
+                  ? ListTile(
                       leading: Container(
                           height: 64,
                           width: 64,
-                          child: widget.posts[index].tim != null
-                              ? Image.network(
-                                  'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')
-                              : SizedBox.shrink()),
+                          child: Image.network(
+                              'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
                       title: Text(parseHtmlString(title)),
-                      subtitle: Text(parseHtmlString(subtitle))))
-              : Card(
-                  child: ListTile(
+                      subtitle: Text(parseHtmlString(subtitle)))
+                  : ListTile(
                       title: Text(parseHtmlString(title)),
                       subtitle: Text(parseHtmlString(subtitle))));
         });
