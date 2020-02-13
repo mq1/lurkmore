@@ -17,6 +17,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:html/parser.dart' show parse;
 
 class Post {
   final int no; // numeric id
@@ -95,25 +96,34 @@ class _PostListState extends State<PostList> {
     return ListView.builder(
         itemCount: widget.posts.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-              child: ListTile(
-                  leading: Container(
-                      height: 64,
-                      width: 64,
-                      child: widget.posts[index].tim != null
-                          ? Image.network(
-                              'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')
-                          : SizedBox.shrink()),
-                  title: Text(
-                    widget.posts[index].sub != null
-                        ? widget.posts[index].sub
-                        : '',
-                  ),
-                  subtitle: Text(
-                    widget.posts[index].com != null
-                        ? widget.posts[index].com
-                        : '',
-                  )));
+          var title = widget.posts[index].sub == null
+              ? widget.posts[index].com
+              : widget.posts[index].sub;
+          var subtitle =
+              widget.posts[index].com == title ? '' : widget.posts[index].com;
+
+          return widget.posts[index].tim != null
+              ? Card(
+                  child: ListTile(
+                      leading: Container(
+                          height: 64,
+                          width: 64,
+                          child: widget.posts[index].tim != null
+                              ? Image.network(
+                                  'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')
+                              : SizedBox.shrink()),
+                      title: Text(parseHtmlString(title)),
+                      subtitle: Text(parseHtmlString(subtitle))))
+              : Card(
+                  child: ListTile(
+                      title: Text(parseHtmlString(title)),
+                      subtitle: Text(parseHtmlString(subtitle))));
         });
   }
+}
+
+String parseHtmlString(String htmlString) {
+  var document = parse(htmlString);
+  String parsedString = parse(document.body.text).documentElement.text;
+  return parsedString;
 }

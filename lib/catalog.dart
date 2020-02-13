@@ -109,25 +109,26 @@ class _ThreadListState extends State<ThreadList> {
     return ListView.builder(
         itemCount: widget.threads.length,
         itemBuilder: (BuildContext context, int index) {
+          var title = widget.threads[index].sub == null
+              ? widget.threads[index].com
+              : widget.threads[index].sub;
+          var subtitle = widget.threads[index].com == title
+              ? ''
+              : widget.threads[index].com;
+
           return Card(
               child: ListTile(
                   leading: Container(
                       height: 64,
                       width: 64,
-                      child: Image.network(
-                          'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')),
-                  title: Text(
-                      widget.threads[index].sub != null
-                          ? widget.threads[index].sub
-                          : '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
-                  subtitle: Text(
-                      widget.threads[index].com != null
-                          ? widget.threads[index].com
-                          : '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
+                      child: widget.threads[index].tim != null
+                          ? Image.network(
+                              'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
+                          : SizedBox.shrink()),
+                  title: Text(parseHtmlString(title),
+                      maxLines: 2, overflow: TextOverflow.ellipsis),
+                  subtitle: Text(parseHtmlString(subtitle),
+                      maxLines: 2, overflow: TextOverflow.ellipsis),
                   onTap: () {
                     _handleTap(widget.threads[index]);
                   }));
