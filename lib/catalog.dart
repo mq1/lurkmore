@@ -97,7 +97,7 @@ class ThreadList extends StatefulWidget {
 
 class _ThreadListState extends State<ThreadList> {
   void _handleTap(Thread thread) {
-    showModalBottomSheet<void>(
+    showBottomSheet<void>(
         context: context,
         builder: (context) {
           return ThreadView(board: widget.board, threadNo: thread.no);
