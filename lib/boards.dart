@@ -17,6 +17,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:lurkmore/catalog.dart';
 
 class Board {
   final String board;
@@ -31,9 +32,7 @@ class Board {
 }
 
 class BoardsView extends StatefulWidget {
-  BoardsView({Key key, @required this.onChanged}) : super(key: key);
-
-  final ValueChanged<String> onChanged;
+  BoardsView({Key key}) : super(key: key);
 
   @override
   _BoardsViewState createState() => _BoardsViewState();
@@ -54,10 +53,6 @@ class _BoardsViewState extends State<BoardsView> {
     return parsed.map<Board>((json) => Board.fromJson(json)).toList();
   }
 
-  void _handleTap(String board) {
-    widget.onChanged(board);
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Board>>(
@@ -66,7 +61,7 @@ class _BoardsViewState extends State<BoardsView> {
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
-            ? BoardList(boards: snapshot.data, onChanged: _handleTap)
+            ? BoardList(boards: snapshot.data)
             : Center(child: CircularProgressIndicator());
       },
     );
@@ -74,10 +69,9 @@ class _BoardsViewState extends State<BoardsView> {
 }
 
 class BoardList extends StatefulWidget {
-  BoardList({Key key, this.boards, @required this.onChanged}) : super(key: key);
+  BoardList({Key key, this.boards}) : super(key: key);
 
   final List<Board> boards;
-  final ValueChanged<String> onChanged;
 
   @override
   _BoardListState createState() => _BoardListState();
@@ -85,7 +79,12 @@ class BoardList extends StatefulWidget {
 
 class _BoardListState extends State<BoardList> {
   void _handleTap(String board) {
-    widget.onChanged(board);
+    showBottomSheet<void>(
+      context: context,
+      builder: (context) {
+        return CatalogView(board: board);
+      }
+    );
   }
 
   @override

@@ -46,20 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   String _currentBoard = 'g';
 
-  void _handleOpenBoard(String board) {
-    setState(() {
-      _currentBoard = board;
-      _currentIndex = 0;
-    });
-  }
-
   Widget _handleNavigation(int index) {
     // TODO change this (horrible navigation system)
     switch (index) {
       case 0:
-        return CatalogView(board: _currentBoard);
+        return BoardsView();
       case 1:
-        return BoardsView(onChanged: _handleOpenBoard);
+        return Center(child: Text('TODO Saved threads'));
       case 2:
         return Center(child: Text('TODO settings'));
     }
@@ -76,9 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_border), title: Text('catalog')),
-          BottomNavigationBarItem(
               icon: Icon(Icons.list), title: Text('boards')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.bookmark_border), title: Text('saved threads')),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text('settings')),
         ],
