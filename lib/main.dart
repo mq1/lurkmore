@@ -15,7 +15,6 @@
  */
 
 import 'package:lurkmore/boards.dart';
-import 'package:lurkmore/catalog.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -44,7 +43,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  String _currentBoard = 'g';
 
   Widget _handleNavigation(int index) {
     // TODO change this (horrible navigation system)
@@ -62,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.title} > /$_currentBoard/'),
+        title: Text(widget.title),
       ),
       body: _handleNavigation(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
