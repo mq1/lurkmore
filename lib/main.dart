@@ -45,9 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final _navigation = [
-      BoardsView(),
-      Center(child: Text('TODO Saved threads')),
-      Center(child: Text('TODO settings')),
+    BoardsView(),
+    Center(child: Text('TODO Saved threads')),
+    Center(child: Text('TODO settings')),
   ];
 
   @override
