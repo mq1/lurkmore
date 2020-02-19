@@ -44,17 +44,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
-  Widget _handleNavigation(int index) {
-    // TODO change this (horrible navigation system)
-    switch (index) {
-      case 0:
-        return BoardsView();
-      case 1:
-        return Center(child: Text('TODO Saved threads'));
-      case 2:
-        return Center(child: Text('TODO settings'));
-    }
-  }
+  final _navigation = [
+      BoardsView(),
+      Center(child: Text('TODO Saved threads')),
+      Center(child: Text('TODO settings')),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: _handleNavigation(_currentIndex),
+      body: _navigation[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: [
