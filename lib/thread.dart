@@ -120,7 +120,8 @@ class _PostListState extends State<PostList> {
 }
 
 String parseHtmlString(String htmlString) {
-  var document = parse(htmlString);
-  String parsedString = parse(document.body.text).documentElement.text;
-  return parsedString;
+  if (htmlString == null)
+    return '';
+
+  return parse(htmlString).body.text;
 }
