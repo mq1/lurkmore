@@ -140,7 +140,8 @@ class _PostListState extends State<PostList> {
   }
 }
 
-Column parseHtmlString(BuildContext context, String htmlString) {
+Column parseHtmlString(BuildContext context, String htmlString,
+    [bool isTitle]) {
   if (htmlString == null) return null;
 
   final theme = Theme.of(context);
@@ -160,6 +161,10 @@ Column parseHtmlString(BuildContext context, String htmlString) {
       if (element.className == 'quote')
         style = TextStyle(color: theme.accentColor);
     } on NoSuchMethodError {}
+
+    if (isTitle is bool && isTitle)
+      style = TextStyle(
+          color: theme.textTheme.title.color, fontWeight: FontWeight.bold);
 
     if (element.text != '')
       children.add(RichText(text: TextSpan(text: element.text, style: style)));

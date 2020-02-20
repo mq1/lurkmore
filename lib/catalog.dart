@@ -141,7 +141,7 @@ class _ThreadListState extends State<ThreadList> {
                           ? Image.network(
                               'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
                           : SizedBox.shrink()),
-                  title: parseHtmlString(context, title),
+                  title: parseHtmlString(context, title, true),
                   subtitle: parseHtmlString(context, subtitle),
                   onTap: () {
                     _handleTap(widget.threads[index]);
