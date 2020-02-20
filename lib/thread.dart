@@ -119,28 +119,29 @@ class _PostListState extends State<PostList> {
   }
 }
 
-RichText parseHtmlString(BuildContext context, String htmlString) {
+Column parseHtmlString(BuildContext context, String htmlString) {
+  final theme = Theme.of(context);
   var html = parse(htmlString).body.nodes;
 
-  var children = <TextSpan>[];
+  var children = <Widget>[];
 
   for (final dynamic element in html) {
-    var fontWeight = FontWeight.normal;
-    var whiteSpace = '';
+    var style = DefaultTextStyle.of(context).style;
 
     try {
-      if (element.className == 'quotelink') {
-        fontWeight = FontWeight.bold;
-        whiteSpace = '\n';
-      }
+      if (element.className == 'quotelink')
+        style = TextStyle(color: theme.cursorColor);
     } on NoSuchMethodError {}
 
-    children.add(
-        TextSpan(text: '${element.text}$whiteSpace', style: TextStyle(fontWeight: fontWeight)));
+    try {
+      if (element.className == 'quote')
+        style = TextStyle(color: theme.accentColor);
+    } on NoSuchMethodError {}
+
+    if (element.text != '')
+      children.add(RichText(text: TextSpan(text: element.text, style: style)));
   }
 
-  return RichText(
-    text:
-        TextSpan(style: DefaultTextStyle.of(context).style, children: children),
-  );
+  return Column(
+      crossAxisAlignment: CrossAxisAlignment.start, children: children);
 }
