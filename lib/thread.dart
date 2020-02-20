@@ -110,18 +110,37 @@ class _PostListState extends State<PostList> {
                           width: 64,
                           child: Image.network(
                               'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
-                      title: Text(parseHtmlString(title)),
-                      subtitle: Text(parseHtmlString(subtitle)))
+                      title: parseHtmlString(context, title),
+                      subtitle: parseHtmlString(context, subtitle))
                   : ListTile(
-                      title: Text(parseHtmlString(title)),
-                      subtitle: Text(parseHtmlString(subtitle))));
+                      title: parseHtmlString(context, title),
+                      subtitle: parseHtmlString(context, subtitle)));
         });
   }
 }
 
-String parseHtmlString(String htmlString) {
-  if (htmlString == null)
-    return '';
+RichText parseHtmlString(BuildContext context, String htmlString) {
+  var html = parse(htmlString).body.nodes;
 
-  return parse(htmlString).body.text;
+  var children = <TextSpan>[];
+
+  for (final dynamic element in html) {
+    var fontWeight = FontWeight.normal;
+    var whiteSpace = '';
+
+    try {
+      if (element.className == 'quotelink') {
+        fontWeight = FontWeight.bold;
+        whiteSpace = '\n';
+      }
+    } on NoSuchMethodError {}
+
+    children.add(
+        TextSpan(text: '${element.text}$whiteSpace', style: TextStyle(fontWeight: fontWeight)));
+  }
+
+  return RichText(
+    text:
+        TextSpan(style: DefaultTextStyle.of(context).style, children: children),
+  );
 }
