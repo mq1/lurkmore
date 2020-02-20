@@ -116,7 +116,7 @@ class _ThreadListState extends State<ThreadList> {
         MaterialPageRoute(
             builder: (context) => ThreadPage(
                 board: widget.board,
-                threadSub: thread.sub,
+                threadSub: thread.sub != null ? thread.sub : '',
                 threadNo: thread.no)));
   }
 
