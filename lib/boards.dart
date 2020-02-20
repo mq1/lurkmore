@@ -79,11 +79,9 @@ class BoardList extends StatefulWidget {
 
 class _BoardListState extends State<BoardList> {
   void _handleTap(String board) {
-    showBottomSheet<void>(
-      context: context,
-      builder: (context) {
-        return CatalogView(board: board);
-      }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CatalogPage(board: board))
     );
   }
 

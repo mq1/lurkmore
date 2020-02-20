@@ -19,6 +19,24 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:html/parser.dart' show parse;
 
+class ThreadPage extends StatelessWidget {
+  final String board;
+  final String threadSub;
+  final int threadNo;
+
+  const ThreadPage({Key key, @required this.board, @required this.threadSub, @required this.threadNo}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('/$board/ > $threadSub')
+      ),
+      body: ThreadView(board: board, threadNo: threadNo),
+    );
+  }
+}
+
 class Post {
   final int no; // numeric id
   final String name; // author

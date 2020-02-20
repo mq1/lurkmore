@@ -19,6 +19,22 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:lurkmore/thread.dart';
 
+class CatalogPage extends StatelessWidget {
+  final board;
+
+  const CatalogPage({Key key, @required this.board}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('/$board/')
+      ),
+      body: CatalogView(board: board),
+    );
+  }
+}
+
 class Thread {
   final int no; // numeric id
   final int tim; // numeric image id
@@ -39,7 +55,7 @@ class Thread {
 }
 
 class CatalogView extends StatefulWidget {
-  CatalogView({Key key, this.board}) : super(key: key);
+  CatalogView({Key key, @required this.board}) : super(key: key);
 
   final String board;
 
@@ -97,11 +113,10 @@ class ThreadList extends StatefulWidget {
 
 class _ThreadListState extends State<ThreadList> {
   void _handleTap(Thread thread) {
-    showBottomSheet<void>(
-        context: context,
-        builder: (context) {
-          return ThreadView(board: widget.board, threadNo: thread.no);
-        });
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ThreadPage(board: widget.board, threadSub: thread.sub,threadNo: thread.no))
+    );
   }
 
   @override
