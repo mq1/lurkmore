@@ -118,11 +118,15 @@ class _PostListState extends State<PostList> {
         itemCount: widget.posts.length,
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
-          var title = widget.posts[index].sub == null
-              ? widget.posts[index].com
-              : widget.posts[index].sub;
-          var subtitle =
-              widget.posts[index].com == title ? '' : widget.posts[index].com;
+          var hasTitle = true;
+          var title = widget.posts[index].sub;
+          var subtitle = widget.posts[index].com;
+
+          if (widget.posts[index].sub == null) {
+            title = widget.posts[index].com;
+            subtitle = null;
+            hasTitle = false;
+          }
 
           return widget.posts[index].tim != null
               ? ListTile(
@@ -131,10 +135,10 @@ class _PostListState extends State<PostList> {
                       width: 64,
                       child: Image.network(
                           'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
-                  title: parseHtmlString(context, title),
+                  title: parseHtmlString(context, title, hasTitle),
                   subtitle: parseHtmlString(context, subtitle))
               : ListTile(
-                  title: parseHtmlString(context, title),
+                  title: parseHtmlString(context, title, hasTitle),
                   subtitle: parseHtmlString(context, subtitle));
         });
   }
