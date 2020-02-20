@@ -120,6 +120,8 @@ class _PostListState extends State<PostList> {
 }
 
 Column parseHtmlString(BuildContext context, String htmlString) {
+  if (htmlString == null) return null;
+
   final theme = Theme.of(context);
   var html = parse(htmlString).body.nodes;
 
