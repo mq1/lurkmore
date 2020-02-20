@@ -27,9 +27,7 @@ class CatalogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('/$board/')
-      ),
+      appBar: AppBar(title: Text('/$board/')),
       body: CatalogView(board: board),
     );
   }
@@ -114,9 +112,12 @@ class ThreadList extends StatefulWidget {
 class _ThreadListState extends State<ThreadList> {
   void _handleTap(Thread thread) {
     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ThreadPage(board: widget.board, threadSub: thread.sub,threadNo: thread.no))
-    );
+        context,
+        MaterialPageRoute(
+            builder: (context) => ThreadPage(
+                board: widget.board,
+                threadSub: thread.sub,
+                threadNo: thread.no)));
   }
 
   @override

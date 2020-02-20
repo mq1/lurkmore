@@ -24,14 +24,17 @@ class ThreadPage extends StatelessWidget {
   final String threadSub;
   final int threadNo;
 
-  const ThreadPage({Key key, @required this.board, @required this.threadSub, @required this.threadNo}) : super(key: key);
+  const ThreadPage(
+      {Key key,
+      @required this.board,
+      @required this.threadSub,
+      @required this.threadNo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('/$board/ > $threadSub')
-      ),
+      appBar: AppBar(title: Text('/$board/ > $threadSub')),
       body: ThreadView(board: board, threadNo: threadNo),
     );
   }
@@ -111,8 +114,9 @@ class PostList extends StatefulWidget {
 class _PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
         itemCount: widget.posts.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
           var title = widget.posts[index].sub == null
               ? widget.posts[index].com
@@ -120,19 +124,18 @@ class _PostListState extends State<PostList> {
           var subtitle =
               widget.posts[index].com == title ? '' : widget.posts[index].com;
 
-          return Card(
-              child: widget.posts[index].tim != null
-                  ? ListTile(
-                      leading: Container(
-                          height: 64,
-                          width: 64,
-                          child: Image.network(
-                              'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
-                      title: parseHtmlString(context, title),
-                      subtitle: parseHtmlString(context, subtitle))
-                  : ListTile(
-                      title: parseHtmlString(context, title),
-                      subtitle: parseHtmlString(context, subtitle)));
+          return widget.posts[index].tim != null
+              ? ListTile(
+                  leading: Container(
+                      height: 64,
+                      width: 64,
+                      child: Image.network(
+                          'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
+                  title: parseHtmlString(context, title),
+                  subtitle: parseHtmlString(context, subtitle))
+              : ListTile(
+                  title: parseHtmlString(context, title),
+                  subtitle: parseHtmlString(context, subtitle));
         });
   }
 }
