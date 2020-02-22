@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final _navigation = [
-    BoardsView(),
+    BoardsPage(),
     Center(child: Text('TODO Saved threads')),
     Center(child: Text('TODO settings')),
   ];
@@ -53,9 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: _navigation[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
