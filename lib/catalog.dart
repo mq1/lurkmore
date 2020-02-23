@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:lurkmore/thread.dart';
+import 'package:lurkmore/types.dart';
 
 class CatalogPage extends StatelessWidget {
   final board;
@@ -30,25 +31,6 @@ class CatalogPage extends StatelessWidget {
       appBar: AppBar(title: Text('/$board/')),
       body: CatalogView(board: board),
     );
-  }
-}
-
-class Thread {
-  final int no; // numeric id
-  final int tim; // numeric image id
-  final String sub; // subject
-  final String com; // comment
-  final int replies; // reply count
-
-  Thread({this.no, this.tim, this.sub, this.com, this.replies});
-
-  factory Thread.fromJson(Map<String, dynamic> json) {
-    return Thread(
-        no: json['no'] as int,
-        tim: json['tim'] as int,
-        sub: json['sub'] as String,
-        com: json['com'] as String,
-        replies: json['replies'] as int);
   }
 }
 

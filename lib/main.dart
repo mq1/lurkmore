@@ -14,10 +14,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import 'package:lurkmore/boards.dart';
 import 'package:flutter/material.dart';
+import 'package:lurkmore/saved_boards.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -45,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final _navigation = [
-    BoardsPage(),
+    SavedBoardsPage(),
     Center(child: Text('TODO Saved threads')),
     Center(child: Text('TODO settings')),
   ];

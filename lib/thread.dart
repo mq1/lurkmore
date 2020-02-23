@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:html/parser.dart' show parse;
+import 'package:lurkmore/types.dart';
 
 class ThreadPage extends StatelessWidget {
   final String board;
@@ -40,24 +41,6 @@ class ThreadPage extends StatelessWidget {
   }
 }
 
-class Post {
-  final int no; // numeric id
-  final String name; // author
-  final String sub; // subject
-  final String com; // comment
-  final int tim; // image numeric id
-
-  Post({this.no, this.name, this.sub, this.com, this.tim});
-
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
-        no: json['no'] as int,
-        name: json['name'] as String,
-        sub: json['sub'] as String,
-        com: json['com'] as String,
-        tim: json['tim'] as int);
-  }
-}
 
 class ThreadView extends StatefulWidget {
   ThreadView({Key key, @required this.board, @required this.threadNo})

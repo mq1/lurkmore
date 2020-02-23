@@ -14,92 +14,66 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:lurkmore/catalog.dart';
-import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:lurkmore/types.dart';
+import 'package:http/http.dart' as http;
 
-class BoardsPage extends StatelessWidget {
-  const BoardsPage({Key key}) : super(key: key);
+class OnlineBoardsPage extends StatelessWidget {
+  const OnlineBoardsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Boards')),
-      body: BoardsView(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-
-        },
-        child: Icon(Icons.add),
-      ),
+      body: OnlineBoardsView(),
     );
   }
 }
 
-class Board {
-  final String board;
-  final String title;
-
-  Board({this.board, this.title});
-
-  factory Board.fromJson(Map<String, dynamic> json) {
-    return Board(
-        board: json['board'] as String, title: json['title'] as String);
-  }
-}
-
-class BoardsView extends StatefulWidget {
-  BoardsView({Key key}) : super(key: key);
+class OnlineBoardsView extends StatefulWidget {
+  OnlineBoardsView({Key key}) : super(key: key);
 
   @override
-  _BoardsViewState createState() => _BoardsViewState();
+  _OnlineBoardsViewState createState() => _OnlineBoardsViewState();
 }
 
-class _BoardsViewState extends State<BoardsView> {
+class _OnlineBoardsViewState extends State<OnlineBoardsView> {
   Map<String, dynamic> boards;
 
-  Future<List<Board>> fetchBoards(http.Client client) async {
+  Future<List<Board>> getBoards(http.Client client) async {
     final response = await client.get('https://a.4cdn.org/boards.json');
 
-    return parseBoards(response.body);
-  }
-
-  List<Board> parseBoards(String responseBody) {
-    final parsed = json.decode(responseBody)['boards'];
-
+    final parsed = json.decode(response.body)['boards'];
     return parsed.map<Board>((json) => Board.fromJson(json)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Board>>(
-      future: fetchBoards(http.Client()),
+      future: getBoards(http.Client()),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
-            ? BoardList(boards: snapshot.data)
+            ? OnlineBoardList(boards: snapshot.data)
             : Center(child: CircularProgressIndicator());
       },
     );
   }
 }
 
-class BoardList extends StatefulWidget {
-  BoardList({Key key, this.boards}) : super(key: key);
+class OnlineBoardList extends StatefulWidget {
+  OnlineBoardList({Key key, this.boards}) : super(key: key);
 
   final List<Board> boards;
 
   @override
-  _BoardListState createState() => _BoardListState();
+  _OnlineBoardListState createState() => _OnlineBoardListState();
 }
 
-class _BoardListState extends State<BoardList> {
+class _OnlineBoardListState extends State<OnlineBoardList> {
   void _handleTap(String board) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CatalogPage(board: board)));
+    // TODO add board to saved boards
   }
 
   @override
