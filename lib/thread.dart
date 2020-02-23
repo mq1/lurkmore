@@ -41,7 +41,6 @@ class ThreadPage extends StatelessWidget {
   }
 }
 
-
 class ThreadView extends StatefulWidget {
   ThreadView({Key key, @required this.board, @required this.threadNo})
       : super(key: key);

@@ -26,9 +26,9 @@ class Board {
   }
 
   Map<String, dynamic> toJson() => {
-    'board': board,
-    'title': title,
-  };
+        'board': board,
+        'title': title,
+      };
 }
 
 class Thread {
