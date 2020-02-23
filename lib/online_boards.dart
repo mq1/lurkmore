@@ -16,6 +16,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:lurkmore/storage.dart';
 import 'package:lurkmore/types.dart';
 import 'package:http/http.dart' as http;
 
@@ -73,8 +74,12 @@ class OnlineBoardList extends StatefulWidget {
 }
 
 class _OnlineBoardListState extends State<OnlineBoardList> {
-  void _handleTap(String board) {
-    // TODO add board to saved boards
+  Future<void> _handleTap(Board board) async {
+    final boards = await getSavedBoards();
+    boards.add(board);
+    saveBoards(boards);
+
+    Navigator.pop(context);
   }
 
   @override
@@ -86,7 +91,7 @@ class _OnlineBoardListState extends State<OnlineBoardList> {
             leading: CircleAvatar(child: Text(widget.boards[index].board)),
             title: Text(widget.boards[index].title),
             onTap: () {
-              _handleTap(widget.boards[index].board);
+              _handleTap(widget.boards[index]);
             },
           );
         });

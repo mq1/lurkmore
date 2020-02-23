@@ -18,10 +18,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:lurkmore/catalog.dart';
 import 'dart:async';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'package:lurkmore/types.dart';
 import 'package:lurkmore/online_boards.dart';
+import 'package:lurkmore/storage.dart';
 
 class SavedBoardsPage extends StatelessWidget {
   const SavedBoardsPage({Key key}) : super(key: key);
@@ -44,38 +43,16 @@ class SavedBoardsPage extends StatelessWidget {
   }
 }
 
-Future<String> get _localPath async {
-  final directory = await getApplicationDocumentsDirectory();
-
-  return directory.path;
-}
-
-Future<File> get _localFile async {
-  final path = await _localPath;
-  return File('$path/boards.json');
-}
-
 class SavedBoardsView extends StatefulWidget {
   @override
   _SavedBoardsViewState createState() => _SavedBoardsViewState();
 }
 
 class _SavedBoardsViewState extends State<SavedBoardsView> {
-  Future<List<Board>> getBoards() async {
-    try {
-      final file = await _localFile;
-      final contents = await file.readAsString();
-      final parsed = json.decode(contents);
-      return parsed.map<Board>((json) => Board.fromJson(json)).toList();
-    } catch (e) {
-      return [];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Board>>(
-      future: getBoards(),
+      future: getSavedBoards(),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 
