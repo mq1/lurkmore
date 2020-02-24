@@ -13,7 +13,6 @@ jobs:
       with:
         channel: 'stable'
     - run: flutter pub get
-    - run: flutter test
     - run: flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
     - name: Push APK to Releases
       uses: ncipollo/release-action@v1
