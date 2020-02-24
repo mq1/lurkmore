@@ -14,7 +14,7 @@ description: An unofficial 4chan client.
 version: 0.0.0
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:

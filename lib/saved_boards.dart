@@ -79,27 +79,31 @@ class _SavedBoardListState extends State<SavedBoardList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: widget.boards.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Dismissible(
+    return ReorderableListView(
+      onReorder: (oldIndex, newIndex) {
+        setState(() {
+          final element = widget.boards.elementAt(oldIndex);
+          widget.boards.removeAt(oldIndex);
+          widget.boards.insert(newIndex, element);
+          saveBoards(widget.boards);
+        });
+      },
+      children: [
+        for (final board in widget.boards)
+          Dismissible(
             background: Container(color: Colors.red),
-            key: Key(widget.boards[index].board),
-            onDismissed: (direction) {
-              setState(() {
-                widget.boards.removeAt(index);
-              });
-
+            key: Key(board.board),
+            onDismissed: (_) {
+              setState(() => widget.boards.remove(board));
               saveBoards(widget.boards);
             },
             child: ListTile(
-              leading: CircleAvatar(child: Text(widget.boards[index].board)),
-              title: Text(widget.boards[index].title),
-              onTap: () {
-                _handleTap(widget.boards[index].board);
-              },
+              leading: CircleAvatar(child: Text(board.board)),
+              title: Text(board.title),
+              onTap: () => _handleTap(board.board),
             ),
-          );
-        });
+          )
+      ],
+    );
   }
 }
