@@ -82,12 +82,23 @@ class _SavedBoardListState extends State<SavedBoardList> {
     return ListView.builder(
         itemCount: widget.boards.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: CircleAvatar(child: Text(widget.boards[index].board)),
-            title: Text(widget.boards[index].title),
-            onTap: () {
-              _handleTap(widget.boards[index].board);
+          return Dismissible(
+            background: Container(color: Colors.red),
+            key: Key(widget.boards[index].board),
+            onDismissed: (direction) {
+              setState(() {
+                widget.boards.removeAt(index);
+              });
+
+              saveBoards(widget.boards);
             },
+            child: ListTile(
+              leading: CircleAvatar(child: Text(widget.boards[index].board)),
+              title: Text(widget.boards[index].title),
+              onTap: () {
+                _handleTap(widget.boards[index].board);
+              },
+            ),
           );
         });
   }
