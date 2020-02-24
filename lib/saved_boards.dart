@@ -84,7 +84,7 @@ class _SavedBoardListState extends State<SavedBoardList> {
         setState(() {
           final element = widget.boards.elementAt(oldIndex);
           widget.boards.removeAt(oldIndex);
-          widget.boards.insert(newIndex, element);
+          widget.boards.insert(newIndex <= widget.boards.length ? newIndex : widget.boards.length, element);
           saveBoards(widget.boards);
         });
       },
