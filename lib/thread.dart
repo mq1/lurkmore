@@ -35,7 +35,7 @@ class ThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(threadSub)),
+      appBar: AppBar(title: Text(parse(threadSub).body.text)),
       body: ThreadView(board: board, threadNo: threadNo),
     );
   }

@@ -103,30 +103,21 @@ class _ThreadListState extends State<ThreadList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: widget.threads.length,
+      separatorBuilder: (BuildContext context, int index) => Divider(),
       itemBuilder: (BuildContext context, int index) {
-        var title = widget.threads[index].sub == null
-            ? widget.threads[index].com
-            : widget.threads[index].sub;
-        var subtitle =
-            widget.threads[index].com == title ? '' : widget.threads[index].com;
-
-        return Card(
-          child: ListTile(
-            leading: Container(
-                height: 64,
-                width: 64,
-                child: widget.threads[index].tim != null
-                    ? Image.network(
-                        'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
-                    : SizedBox.shrink()),
-            title: parseHtmlString(context, title, true),
-            subtitle: parseHtmlString(context, subtitle),
-            onTap: () {
-              _handleTap(widget.threads[index]);
-            },
-          ),
+        return ListTile(
+          leading: Container(
+              height: 64,
+              width: 64,
+              child: widget.threads[index].tim != null
+                  ? Image.network(
+                      'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
+                  : SizedBox.shrink()),
+          title: parseHtmlString(context, widget.threads[index].sub, true),
+          subtitle: parseHtmlString(context, widget.threads[index].com),
+          onTap: () => _handleTap(widget.threads[index]),
         );
       },
     );
