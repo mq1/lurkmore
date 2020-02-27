@@ -69,16 +69,17 @@ class _ThreadViewState extends State<ThreadView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: FutureBuilder<List<Post>>(
-      future: fetchThread(http.Client()),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) print(snapshot.error);
+      child: FutureBuilder<List<Post>>(
+        future: fetchThread(http.Client()),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
 
-        return snapshot.hasData
-            ? PostList(board: widget.board, posts: snapshot.data)
-            : Center(child: CircularProgressIndicator());
-      },
-    ));
+          return snapshot.hasData
+              ? PostList(board: widget.board, posts: snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
   }
 }
 
@@ -97,20 +98,21 @@ class _PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        itemCount: widget.posts.length,
-        separatorBuilder: (BuildContext context, int index) => Divider(),
-        itemBuilder: (BuildContext context, int index) {
-          return widget.posts[index].tim != null
-              ? ListTile(
-                  leading: Container(
-                      height: 64,
-                      width: 64,
-                      child: Image.network(
-                          'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
-                  title: parseHtmlString(context, widget.posts[index].com))
-              : ListTile(
-                  title: parseHtmlString(context, widget.posts[index].com));
-        });
+      itemCount: widget.posts.length,
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+      itemBuilder: (BuildContext context, int index) {
+        return widget.posts[index].tim != null
+            ? ListTile(
+                leading: Container(
+                    height: 64,
+                    width: 64,
+                    child: Image.network(
+                        'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
+                title: parseHtmlString(context, widget.posts[index].com))
+            : ListTile(
+                title: parseHtmlString(context, widget.posts[index].com));
+      },
+    );
   }
 }
 

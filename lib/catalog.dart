@@ -57,11 +57,9 @@ class _CatalogViewState extends State<CatalogView> {
     List<Thread> threads = [];
     final parsed = json.decode(responseBody);
 
-    for (final page in parsed) {
-      for (final thread in page['threads']) {
+    for (final page in parsed)
+      for (final thread in page['threads'])
         threads.add(Thread.fromJson(thread));
-      }
-    }
 
     return threads;
   }
@@ -94,40 +92,43 @@ class ThreadList extends StatefulWidget {
 class _ThreadListState extends State<ThreadList> {
   void _handleTap(Thread thread) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ThreadPage(
-                board: widget.board,
-                threadSub: thread.sub != null ? thread.sub : '',
-                threadNo: thread.no)));
+      context,
+      MaterialPageRoute(
+          builder: (context) => ThreadPage(
+              board: widget.board,
+              threadSub: thread.sub != null ? thread.sub : '',
+              threadNo: thread.no)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.threads.length,
-        itemBuilder: (BuildContext context, int index) {
-          var title = widget.threads[index].sub == null
-              ? widget.threads[index].com
-              : widget.threads[index].sub;
-          var subtitle = widget.threads[index].com == title
-              ? ''
-              : widget.threads[index].com;
+      itemCount: widget.threads.length,
+      itemBuilder: (BuildContext context, int index) {
+        var title = widget.threads[index].sub == null
+            ? widget.threads[index].com
+            : widget.threads[index].sub;
+        var subtitle =
+            widget.threads[index].com == title ? '' : widget.threads[index].com;
 
-          return Card(
-              child: ListTile(
-                  leading: Container(
-                      height: 64,
-                      width: 64,
-                      child: widget.threads[index].tim != null
-                          ? Image.network(
-                              'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
-                          : SizedBox.shrink()),
-                  title: parseHtmlString(context, title, true),
-                  subtitle: parseHtmlString(context, subtitle),
-                  onTap: () {
-                    _handleTap(widget.threads[index]);
-                  }));
-        });
+        return Card(
+          child: ListTile(
+            leading: Container(
+                height: 64,
+                width: 64,
+                child: widget.threads[index].tim != null
+                    ? Image.network(
+                        'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
+                    : SizedBox.shrink()),
+            title: parseHtmlString(context, title, true),
+            subtitle: parseHtmlString(context, subtitle),
+            onTap: () {
+              _handleTap(widget.threads[index]);
+            },
+          ),
+        );
+      },
+    );
   }
 }

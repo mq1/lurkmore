@@ -85,15 +85,16 @@ class _OnlineBoardListState extends State<OnlineBoardList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.boards.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: CircleAvatar(child: Text(widget.boards[index].board)),
-            title: Text(widget.boards[index].title),
-            onTap: () {
-              _handleTap(widget.boards[index]);
-            },
-          );
-        });
+      itemCount: widget.boards.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          leading: CircleAvatar(child: Text(widget.boards[index].board)),
+          title: Text(widget.boards[index].title),
+          onTap: () {
+            _handleTap(widget.boards[index]);
+          },
+        );
+      },
+    );
   }
 }
