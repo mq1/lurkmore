@@ -56,8 +56,10 @@ class Post {
   final String sub; // subject
   final String com; // comment
   final int tim; // image numeric id
+  final String filename;
+  final String ext; // file extension
 
-  Post({this.no, this.name, this.sub, this.com, this.tim});
+  Post({this.no, this.name, this.sub, this.com, this.tim, this.filename, this.ext});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
@@ -65,6 +67,9 @@ class Post {
         name: json['name'] as String,
         sub: json['sub'] as String,
         com: json['com'] as String,
-        tim: json['tim'] as int);
+        tim: json['tim'] as int,
+        filename: json['filename'] as String,
+        ext: json['ext'] as String,
+    );
   }
 }

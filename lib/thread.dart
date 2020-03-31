@@ -19,6 +19,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:html/parser.dart' show parse;
 import 'package:lurkmore/types.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ThreadPage extends StatelessWidget {
   final String board;
@@ -104,10 +105,24 @@ class _PostListState extends State<PostList> {
         return widget.posts[index].tim != null
             ? ListTile(
                 leading: Container(
-                    height: 64,
-                    width: 64,
+                  height: 64,
+                  width: 64,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PhotoView(
+                            imageProvider: NetworkImage(
+                                'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}${widget.posts[index].ext}'),
+                          ),
+                        ),
+                      );
+                    },
                     child: Image.network(
-                        'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg')),
+                        'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg'),
+                  ),
+                ),
                 title: parseHtmlString(context, widget.posts[index].com))
             : ListTile(
                 title: parseHtmlString(context, widget.posts[index].com));
