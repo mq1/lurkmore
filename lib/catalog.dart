@@ -15,10 +15,10 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:lurkmore/thread.dart';
 import 'package:lurkmore/types.dart';
+import '4chan/static.dart';
+import '4chan/api.dart';
 
 class CatalogPage extends StatelessWidget {
   final board;
@@ -46,28 +46,10 @@ class CatalogView extends StatefulWidget {
 class _CatalogViewState extends State<CatalogView> {
   Map<String, dynamic> threads;
 
-  Future<List<Thread>> fetchCatalog(http.Client client) async {
-    final response =
-        await client.get('https://a.4cdn.org/${widget.board}/catalog.json');
-
-    return parseCatalog(response.body);
-  }
-
-  List<Thread> parseCatalog(String responseBody) {
-    List<Thread> threads = [];
-    final parsed = json.decode(responseBody);
-
-    for (final page in parsed)
-      for (final thread in page['threads'])
-        threads.add(Thread.fromJson(thread));
-
-    return threads;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Thread>>(
-      future: fetchCatalog(http.Client()),
+      future: fetchCatalog(widget.board),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 
@@ -94,10 +76,11 @@ class _ThreadListState extends State<ThreadList> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ThreadPage(
-              board: widget.board,
-              threadSub: thread.sub != null ? thread.sub : '',
-              threadNo: thread.no)),
+        builder: (context) => ThreadPage(
+            board: widget.board,
+            threadSub: thread.sub != null ? thread.sub : '',
+            threadNo: thread.no),
+      ),
     );
   }
 
@@ -112,8 +95,9 @@ class _ThreadListState extends State<ThreadList> {
               height: 64,
               width: 64,
               child: widget.threads[index].tim != null
-                  ? Image.network(
-                      'https://i.4cdn.org/${widget.board}/${widget.threads[index].tim}s.jpg')
+                  ? Image(
+                      image:
+                          getThumbnail(widget.board, widget.threads[index].tim))
                   : SizedBox.shrink()),
           title: parseHtmlString(context, widget.threads[index].sub, true),
           subtitle: parseHtmlString(context, widget.threads[index].com),

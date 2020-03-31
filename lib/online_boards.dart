@@ -14,11 +14,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lurkmore/storage.dart';
 import 'package:lurkmore/types.dart';
-import 'package:http/http.dart' as http;
+import '4chan/api.dart';
 
 class OnlineBoardsPage extends StatelessWidget {
   const OnlineBoardsPage({Key key}) : super(key: key);
@@ -42,17 +41,10 @@ class OnlineBoardsView extends StatefulWidget {
 class _OnlineBoardsViewState extends State<OnlineBoardsView> {
   Map<String, dynamic> boards;
 
-  Future<List<Board>> getBoards(http.Client client) async {
-    final response = await client.get('https://a.4cdn.org/boards.json');
-
-    final parsed = json.decode(response.body)['boards'];
-    return parsed.map<Board>((json) => Board.fromJson(json)).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Board>>(
-      future: getBoards(http.Client()),
+      future: getBoards(),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 

@@ -15,11 +15,11 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:html/parser.dart' show parse;
+import 'package:lurkmore/4chan/static.dart';
 import 'package:lurkmore/types.dart';
 import 'package:photo_view/photo_view.dart';
+import '4chan/api.dart';
 
 class ThreadPage extends StatelessWidget {
   final String board;
@@ -54,24 +54,11 @@ class ThreadView extends StatefulWidget {
 }
 
 class _ThreadViewState extends State<ThreadView> {
-  Future<List<Post>> fetchThread(http.Client client) async {
-    final response = await client.get(
-        'https://a.4cdn.org/${widget.board}/thread/${widget.threadNo}.json');
-
-    return parseThread(response.body);
-  }
-
-  List<Post> parseThread(String responseBody) {
-    final parsed = json.decode(responseBody)['posts'];
-
-    return parsed.map<Post>((json) => Post.fromJson(json)).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder<List<Post>>(
-        future: fetchThread(http.Client()),
+        future: fetchThread(widget.board, widget.threadNo),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
 
@@ -113,14 +100,17 @@ class _PostListState extends State<PostList> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => PhotoView(
-                            imageProvider: NetworkImage(
-                                'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}${widget.posts[index].ext}'),
+                            imageProvider: getImage(
+                                widget.board,
+                                widget.posts[index].tim,
+                                widget.posts[index].ext),
                           ),
                         ),
                       );
                     },
-                    child: Image.network(
-                        'https://i.4cdn.org/${widget.board}/${widget.posts[index].tim}s.jpg'),
+                    child: Image(
+                        image: getThumbnail(
+                            widget.board, widget.posts[index].tim)),
                   ),
                 ),
                 title: parseHtmlString(context, widget.posts[index].com))

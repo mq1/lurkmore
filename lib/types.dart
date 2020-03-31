@@ -59,17 +59,24 @@ class Post {
   final String filename;
   final String ext; // file extension
 
-  Post({this.no, this.name, this.sub, this.com, this.tim, this.filename, this.ext});
+  Post(
+      {this.no,
+      this.name,
+      this.sub,
+      this.com,
+      this.tim,
+      this.filename,
+      this.ext});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-        no: json['no'] as int,
-        name: json['name'] as String,
-        sub: json['sub'] as String,
-        com: json['com'] as String,
-        tim: json['tim'] as int,
-        filename: json['filename'] as String,
-        ext: json['ext'] as String,
+      no: json['no'] as int,
+      name: json['name'] as String,
+      sub: json['sub'] as String,
+      com: json['com'] as String,
+      tim: json['tim'] as int,
+      filename: json['filename'] as String,
+      ext: json['ext'] as String,
     );
   }
 }
