@@ -101,16 +101,20 @@ class _PostListState extends State<PostList> {
                         MaterialPageRoute(
                           builder: (context) => PhotoView(
                             imageProvider: getImage(
-                                widget.board,
-                                widget.posts[index].tim,
-                                widget.posts[index].ext),
+                              widget.board,
+                              widget.posts[index].tim,
+                              widget.posts[index].ext,
+                            ),
                           ),
                         ),
                       );
                     },
                     child: Image(
-                        image: getThumbnail(
-                            widget.board, widget.posts[index].tim)),
+                      image: getThumbnail(
+                        widget.board,
+                        widget.posts[index].tim,
+                      ),
+                    ),
                   ),
                 ),
                 title: parseHtmlString(context, widget.posts[index].com))
@@ -121,7 +125,7 @@ class _PostListState extends State<PostList> {
   }
 }
 
-Column parseHtmlString(BuildContext context, String htmlString,
+Widget parseHtmlString(BuildContext context, String htmlString,
     [bool isTitle]) {
   if (htmlString == null) return null;
 
@@ -134,23 +138,26 @@ Column parseHtmlString(BuildContext context, String htmlString,
     var style = DefaultTextStyle.of(context).style;
 
     try {
-      if (element.className == 'quotelink')
-        style = TextStyle(color: theme.cursorColor);
-    } on NoSuchMethodError {}
-
-    try {
-      if (element.className == 'quote')
-        style = TextStyle(color: theme.accentColor);
+      switch (element.className) {
+        case 'quotelink':
+          style = TextStyle(color: theme.cursorColor);
+          break;
+        case 'quote':
+          style = TextStyle(color: theme.accentColor);
+          break;
+        default:
+      }
     } on NoSuchMethodError {}
 
     if (isTitle is bool && isTitle)
       style = TextStyle(
           color: theme.textTheme.title.color, fontWeight: FontWeight.bold);
 
-    if (element.text != '')
-      children.add(RichText(text: TextSpan(text: element.text, style: style)));
+    if (element.text != '') children.add(Text(element.text, style: style));
   }
 
   return Column(
-      crossAxisAlignment: CrossAxisAlignment.start, children: children);
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: children,
+  );
 }
