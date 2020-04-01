@@ -125,6 +125,10 @@ class _PostListState extends State<PostList> {
   }
 }
 
+String unescapeHtml(String s) {
+  return parse(s).text;
+}
+
 Widget parseHtmlString(BuildContext context, String htmlString,
     [bool isTitle]) {
   if (htmlString == null) return null;

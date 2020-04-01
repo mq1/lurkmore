@@ -99,7 +99,7 @@ class _ThreadListState extends State<ThreadList> {
                       image:
                           getThumbnail(widget.board, widget.threads[index].tim))
                   : SizedBox.shrink()),
-          title: parseHtmlString(context, widget.threads[index].sub, true),
+          title: widget.threads[index].sub != null ? Text(unescapeHtml(widget.threads[index].sub)) : null,
           subtitle: parseHtmlString(context, widget.threads[index].com),
           onTap: () => _handleTap(widget.threads[index]),
         );
