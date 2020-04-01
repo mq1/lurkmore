@@ -153,10 +153,6 @@ Widget parseHtmlString(BuildContext context, String htmlString,
       }
     } on NoSuchMethodError {}
 
-    if (isTitle is bool && isTitle)
-      style = TextStyle(
-          color: theme.textTheme.title.color, fontWeight: FontWeight.bold);
-
     if (element.text != '') children.add(Text(element.text, style: style));
   }
 
